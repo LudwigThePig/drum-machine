@@ -3,52 +3,52 @@ import './App.css';
 
 const drumpad = [
   {
-    key: 'q',
+    key: 'Q',
     keycode: 81,
     id: 'string 1',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+1.wav'
   },
   {
-    key: 'w',
+    key: 'W',
     keycode: 87,
     id: 'string 2',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+2.wav'
   },
   {
-    key: 'e',
+    key: 'E',
     keycode: 69,
     id: 'string 3',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+3.wav'
   },
   {
-    key: 'a',
+    key: 'A',
     keycode: 65,
     id: 'string 4',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+4.wav'
   },
   {
-    key: 's',
+    key: 'S',
     keycode: 83,
     id: 'string 5',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+5.wav'
   },
   {
-    key: 'd',
+    key: 'D',
     keycode: 68,
     id: 'string 6',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+6.wav'
   },  {
-    key: 'z',
+    key: 'Z',
     keycode: 90,
     id: 'string 7',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+7.wav'
   },  {
-    key: 'x',
+    key: 'X',
     keycode: 88,
     id: 'string 8',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+8.wav'
   },  {
-    key: 'c',
+    key: 'C',
     keycode: 67,
     id: 'string 9',
     sound: 'https://s3-ap-southeast-2.amazonaws.com/fcc-wav/String+9.wav'
@@ -56,9 +56,6 @@ const drumpad = [
 ]
 
 class App extends Component{
-  constructor(){
-    super();
-  }
   render(){
     return(
       <div>
@@ -74,6 +71,7 @@ class Pad extends Component{
     super();
     this.handleKeydown = this.handleKeydown.bind(this); 
     this.playAudio = this.playAudio.bind(this);
+    this.visualEffect = this.visualEffect.bind(this);
   }
   componentDidMount(){
     document.addEventListener('keydown', this.handleKeydown)
@@ -90,11 +88,23 @@ class Pad extends Component{
     let a = document.getElementById(this.props.a);
     a.currentTime = 0;
     a.play();
+    this.visualEffect();
+  }
+  visualEffect(){
+    let id = document.getElementById(this.props.keyId);
+    let display = document.getElementById('display');
+    //use setTimeout 0 to avoid crowding the call stack on a non essential tasks
+    setTimeout(()=>{
+      id.style.background ='#688E26';
+      display.innerHTML = this.props.keyId + ' SOUND';
+
+    }, 0);
+    setTimeout(()=>{id.style.background ='#F44708';}, 200);
   }
 
   render(){
     return ( 
-      <div className="drum-pad" id={this.props.keyId} key={this.props.id} onClick={this.play} >
+      <div className="drum-pad" id={this.props.keyId} key={this.props.id} onClick={this.playAudio} >
         <p>{this.props.keyId}</p>
         <audio id={this.props.a} src={this.props.audio} type='audio/wav'> </audio>
       </div> 
@@ -103,9 +113,6 @@ class Pad extends Component{
 }
 
 class Machine extends Component{
-  constructor(){
-    super();
-  }
   render(){
     const pad = drumpad.map((obj, i, arr)=>{
     return ( 
@@ -118,37 +125,13 @@ class Machine extends Component{
     });
     return(
       <div id='drum-machine'>
+        <h1><span className='line'>Drum</span> String Machine</h1>
+        <div id='display-wrapper'>
+          <p id='display'>DISPLAY SOMETHING</p>
+        </div>
         <div id='pad-grid'>
           {pad}
-          {/* <div id='Q' className='drum-pad'>
-            <p>Q</p>
-          </div>
-          <div id='W' className='drum-pad'>
-            <p>W</p>
-          </div>
-          <div id='E' className='drum-pad'>
-            <p>E</p>
-          </div>
-          <div id='A' className='drum-pad'>
-            <p>A</p>
-          </div>
-          <div id='S' className='drum-pad'>
-            <p>S</p>
-          </div>
-          <div id='D' className='drum-pad'>
-            <p>D</p>
-          </div>
-          <div id='Z' className='drum-pad'>
-            <p>Z</p>
-          </div>
-          <div id='X' className='drum-pad'>
-            <p>X</p>
-          </div>
-          <div id='C' className='drum-pad'>
-            <p>C</p>
-          </div> */}
         </div>
-        <p id='display'>DISPLAY SOMETHING</p>
       </div>
     )
   }

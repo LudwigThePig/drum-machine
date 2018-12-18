@@ -13,9 +13,10 @@ color: #FAA613;
 
 /* mobile landscape  DEFAULT*/
 #pad-grid{
-  background: #688E26;
+  background: #A10702;
   width: 80vw;
   height: 80vw;
+  margin: 0px auto;
   padding: .5em;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -30,6 +31,25 @@ color: #FAA613;
 }
 
 .drum-pad{
-  background: #A10702;
-  
+  background: #F44708;
+  box-shadow: 5px 10px #900601;
+}
+
+h1{
+  text-align: center;
+  margin-bottom: 2px;
+  padding-bottom: 0px;
+}
+.line{
+  text-decoration: line-through;
+}
+
+#display-wrapper{
+  background: #900601;
+  margin: 0px auto;
+  text-align: center;
+  color: #ddd;
+  font-weight: bold;
+  font-size: 2em;
+  width: 10em;
 }
