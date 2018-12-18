@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 const drumpad = [
@@ -70,16 +69,58 @@ class App extends Component{
 }
 export default App;
 
+class Pad extends Component{
+  constructor(){
+    super();
+    this.handleKeydown = this.handleKeydown.bind(this); 
+    this.playAudio = this.playAudio.bind(this);
+  }
+  componentDidMount(){
+    document.addEventListener('keydown', this.handleKeydown)
+  }
+  componentWillUnmount(){
+    document.removeEventListener('keydown', this.handleKeydown)
+  }
+  handleKeydown(e){
+    if(e.keyCode == this.props.keyCode){
+      this.playAudio();
+    }
+  }
+  playAudio(){
+    let a = document.getElementById(this.props.a);
+    a.currentTime = 0;
+    a.play();
+  }
+
+  render(){
+    return ( 
+      <div className="drum-pad" id={this.props.keyId} key={this.props.id} onClick={this.play} >
+        <p>{this.props.keyId}</p>
+        <audio id={this.props.a} src={this.props.audio} type='audio/wav'> </audio>
+      </div> 
+    );
+  }
+}
+
 class Machine extends Component{
   constructor(){
     super();
   }
   render(){
-
+    const pad = drumpad.map((obj, i, arr)=>{
+    return ( 
+      <Pad 
+        keyId={arr[i].key} 
+        audio={arr[i].sound} 
+        keyCode={arr[i].keycode}
+        a={arr[i].key + '-a'} /> 
+      )
+    });
     return(
       <div id='drum-machine'>
         <div id='pad-grid'>
-          <div id='Q' className='drum-pad'>
+          {pad}
+          {/* <div id='Q' className='drum-pad'>
             <p>Q</p>
           </div>
           <div id='W' className='drum-pad'>
@@ -105,7 +146,7 @@ class Machine extends Component{
           </div>
           <div id='C' className='drum-pad'>
             <p>C</p>
-          </div>
+          </div> */}
         </div>
         <p id='display'>DISPLAY SOMETHING</p>
       </div>
